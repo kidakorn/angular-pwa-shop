@@ -1,0 +1,83 @@
+.product-container {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+	gap: 20px;
+	padding: 20px;
+}
+
+.product-card {
+	background: white;
+	border-radius: 12px;
+	overflow: hidden;
+	display: flex;
+	flex-direction: column;
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+	transition: transform 0.2s ease;
+
+	&:hover {
+		transform: translateY(-5px);
+	}
+
+	.product-image {
+		width: 100%;
+		height: 220px;
+		flex-shrink: 0; // ป้องกันรูปโดนบีบ
+
+		img {
+			width: 100%;
+			height: 100%;
+			object-fit: cover;
+		}
+	}
+
+	.product-info {
+		padding: 20px;
+		display: flex;
+		flex-direction: column;
+		flex-grow: 1; // ให้พื้นที่ข้อมูลขยายเต็มที่
+
+		h3 {
+			margin: 0 0 10px;
+			font-size: 1.1rem;
+			font-weight: 600;
+			color: var(--drak-bg);
+		}
+
+		.description {
+			color: #666;
+			font-size: 0.85rem;
+			margin-bottom: 15px;
+			display: -webkit-box; // จำกัดบรรทัดคำอธิบายให้เท่ากันทุกการ์ด
+			-webkit-line-clamp: 2;
+			-webkit-box-orient: vertical;
+			overflow: hidden;
+			height: 2.4rem;
+		}
+
+		.price-row {
+			margin-top: auto;
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+
+			.price {
+				font-weight: bold;
+				color: var(--primary-red);
+				font-size: 1.1rem;
+			}
+
+			.add-btn {
+				background-color: var(--primary-red);
+				color: var(--light-gray);
+				border: none;
+				padding: 8px 15px;
+				border-radius: 6px;
+				cursor: pointer;
+
+				&:hover {
+					background-color: var(--secondary-red);
+				}
+			}
+		}
+	}
+}

@@ -1,0 +1,49 @@
+<div class="cart-page">
+	<div class="header-section">
+		<h2>ตะกร้าสินค้าของคุณ</h2>
+		<a routerLink="/" class="back-link">กลับไปเลือกสินค้า</a>
+	</div>
+
+	@if (cartService.cartCount() > 0) {
+	<div class="cart-container">
+		<div class="cart-items">
+			@for (item of cartService.getCartItems()(); track $index) {
+			<div class="cart-item">
+				<img [src]="item.image" [alt]="item.name">
+				<div class="item-details">
+					<h3>{{ item.name }}</h3>
+					<p class="category">{{ item.category }}</p>
+				</div>
+				<div class="item-price">
+					<span>{{ item.price | number }} บาท</span>
+				</div>
+				<button class="remove-btn" (click)="removeItem($index)">
+					<lucide-icon name="trash-2" [size]="20"></lucide-icon>
+				</button>
+			</div>
+			}
+		</div>
+
+		<div class="cart-summary">
+			<h3>สรุปคำสั่งซื้อ</h3>
+			<div class="summary-row">
+				<span>จำนวนสินค้า</span>
+				<span>{{ cartService.cartCount() }} ชิ้น</span>
+			</div>
+			<div class="summary-row total">
+				<span>ราคารวมทั้งหมด</span>
+				<span>{{ cartService.totalPrice() | number }} บาท</span>
+			</div>
+			<button class="checkout-btn">ชำระเงิน</button>
+		</div>
+	</div>
+
+	} @else {
+
+	<div class="empty-cart">
+		<lucide-icon name="shopping-bag" [size]="64"></lucide-icon>
+		<p>ยังไม่มีสินค้าในตะกร้าของคุณ</p>
+		<button routerLink="/" class="shop-now-btn">ไปช้อปปิ้งกันเลย</button>
+	</div>
+	}
+</div>

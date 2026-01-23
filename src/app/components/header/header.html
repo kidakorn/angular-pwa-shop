@@ -1,0 +1,17 @@
+<header class="main-header">
+	<div class="logo">
+		<h1 class="logo-text">DEVA<span>SHOP</span></h1>
+	</div>
+
+	<div class="cart-status" routerLink="/cart" style="cursor: pointer;">
+		<div class="cart-icon">
+			<lucide-icon name="shopping-cart" [size]="24"></lucide-icon>
+
+			@if (cartService.cartCount() > 0) {
+			<span class="badge">{{ cartService.cartCount() }}</span>
+			}
+			
+		</div>
+		<span class="total-price">{{ cartService.totalPrice() | number }} บาท</span>
+	</div>
+</header>
