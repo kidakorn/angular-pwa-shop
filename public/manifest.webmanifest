@@ -1,6 +1,8 @@
 {
-  "name": "augular-pwa-shop",
-  "short_name": "augular-pwa-shop",
+  "name": "DEVA SHOP",
+  "short_name": "DEVASHOP",
+  "theme_color": "#D90429",
+  "background_color": "#EDF2F4",
   "display": "standalone",
   "scope": "./",
   "start_url": "./",
