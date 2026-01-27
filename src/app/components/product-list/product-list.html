@@ -2,8 +2,14 @@
 	@for (item of products; track item.id) {
 	<div class="product-card">
 
+		@if (item.isBestSeller) {
+		<div class="best-seller-ribbon">
+			<span>Best Seller</span>
+		</div>
+		}
+
 		<div class="product-image">
-			<img [src]="item.image" crossorigin="anonymous" [alt]="item.name">
+			<img [src]="item.imageUrl" crossorigin="anonymous" [alt]="item.name">
 		</div>
 
 		<div class="product-info">

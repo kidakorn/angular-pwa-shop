@@ -8,6 +8,7 @@
 .product-card {
 	background: white;
 	border-radius: 12px;
+	position: relative;
 	overflow: hidden;
 	display: flex;
 	flex-direction: column;
@@ -16,6 +17,22 @@
 
 	&:hover {
 		transform: translateY(-5px);
+	}
+
+	.best-seller-ribbon {
+		position: absolute;
+		top: 15px;
+		left: -35px;
+		width: 130px;
+		background: var(--primary-red);
+		color: white;
+		text-align: center;
+		transform: rotate(-45deg);
+		font-weight: bold;
+		font-size: 0.75rem;
+		padding: 4px 0;
+		box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+		z-index: 10;
 	}
 
 	.product-image {

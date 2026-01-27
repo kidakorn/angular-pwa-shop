@@ -9,13 +9,30 @@
 		<div class="cart-items">
 			@for (item of cartService.getCartItems()(); track $index) {
 			<div class="cart-item">
-				<img [src]="item.image" [alt]="item.name">
+				<img [src]="item.product.imageUrl" [alt]="item.product.name">
 				<div class="item-details">
-					<h3>{{ item.name }}</h3>
-					<p class="category">{{ item.category }}</p>
+					<h3>{{ item.product.name }}</h3>
+					<p class="category">{{ item.product.category }}</p>
+
 				</div>
 				<div class="item-price">
-					<span>{{ item.price | number }} บาท</span>
+					
+					<div class="quantity-controls">
+						<button class="qty-btn" (click)="cartService.updateQuantity($index, -1)">
+							<lucide-icon name="plus" [size]="16"></lucide-icon>
+						</button>
+
+						<span class="qty-number">{{ item.quantity }}</span>
+
+						<button class="qty-btn" (click)="cartService.updateQuantity($index, 1)">
+							<lucide-icon name="plus" [size]="16"></lucide-icon>
+						</button>
+					</div>
+
+					<div class="quantity-display">
+						<span>{{ item.product.price | number }} x {{ item.quantity }}</span>
+					</div>
+					<span class="subtotal">{{ item.product.price * item.quantity | number }} บาท</span>
 				</div>
 				<button class="remove-btn" (click)="removeItem($index)">
 					<lucide-icon name="trash-2" [size]="20"></lucide-icon>

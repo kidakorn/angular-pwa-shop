@@ -24,6 +24,7 @@ export class ProductList implements OnInit {
   }
 
   ngOnInit(): void {
-    this.products = this.productService.getProduct();
+    this.products = this.productService.getProducts();
+    console.log('ข้อมูลสินค้าทั้งหมดที่ดึงมาได้:', this.products);
   }
 }

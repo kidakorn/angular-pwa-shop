@@ -4,6 +4,7 @@
 	</div>
 
 	<div class="cart-status" routerLink="/cart" style="cursor: pointer;">
+		<span class="total-price">{{ cartService.totalPrice() | number }} บาท</span>
 		<div class="cart-icon">
 			<lucide-icon name="shopping-cart" [size]="24"></lucide-icon>
 
@@ -12,6 +13,5 @@
 			}
 			
 		</div>
-		<span class="total-price">{{ cartService.totalPrice() | number }} บาท</span>
 	</div>
 </header>
