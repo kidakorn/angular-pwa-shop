@@ -1,17 +1,36 @@
 <header class="main-header">
-	<div class="logo">
-		<h1 class="logo-text">DEVA<span>SHOP</span></h1>
-	</div>
+	<div class="container herder-wrapper">
 
-	<div class="cart-status" routerLink="/cart" style="cursor: pointer;">
-		<span class="total-price">{{ cartService.totalPrice() | number }} บาท</span>
-		<div class="cart-icon">
-			<lucide-icon name="shopping-cart" [size]="24"></lucide-icon>
-
-			@if (cartService.cartCount() > 0) {
-			<span class="badge">{{ cartService.cartCount() }}</span>
+		<button class="menu-toggle" (click)="toggleMenu()">
+			@if (!isMenuOpen()) {
+			<lucide-icon name="menu"></lucide-icon>
+			} @else {
+			<lucide-icon name="x"></lucide-icon>
 			}
-			
+		</button>
+
+		<div class="logo" routerLink="/">
+			<h1 class="logo-text">DEVA<span>SHOP</span></h1>
+		</div>
+
+		<div class="cart-status" routerLink="/cart" style="cursor: pointer;">
+			<span class="total-price">{{ cartService.totalPrice() | number }} บาท</span>
+			<div class="cart-icon">
+				<lucide-icon name="shopping-cart" [size]="24"></lucide-icon>
+
+				@if (cartService.cartCount() > 0) {
+				<span class="badge">{{ cartService.cartCount() }}</span>
+				}
+
+			</div>
 		</div>
 	</div>
+
+	<nav class="mobile-menu" [class.open]="isMenuOpen()">
+		<ul class="nav-links">
+			<li><a routerLink="/" (click)="isMenuOpen.set(false)">หน้าแรก</a></li>
+			<li><a routerLink="/" (click)="isMenuOpen.set(false)">สินค้าทั้งหมด</a></li>
+			<li><a routerLink="/cart" (click)="isMenuOpen.set(false)">ตะกร้าสินค้า</a></li>
+		</ul>
+	</nav>
 </header>

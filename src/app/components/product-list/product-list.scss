@@ -1,8 +1,8 @@
 .product-container {
 	display: grid;
-	grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-	gap: 20px;
-	padding: 20px;
+	grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+	gap: 2rem;
+	padding: 2rem;
 }
 
 .product-card {
@@ -57,7 +57,7 @@
 			margin: 0 0 10px;
 			font-size: 1.1rem;
 			font-weight: 600;
-			color: var(--drak-bg);
+			color: var(--dark-bg);
 		}
 
 		.description {
@@ -96,5 +96,13 @@
 				}
 			}
 		}
+	}
+}
+
+@media (max-width: 480px) {
+	.product-container {
+		grid-template-columns: 1fr;
+		padding: 1rem;
+		gap: 1rem;
 	}
 }

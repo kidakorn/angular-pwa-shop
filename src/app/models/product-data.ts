@@ -10,7 +10,8 @@ export const PRODUCTS: Product[] = [
 		category: 'Electronics',
 		inventory: 15,
 		rating: 4.5,
-		isBestSeller: true
+		isBestSeller: true,
+		soldCount: 15,
 	},
 	{
 		id: '2',
@@ -21,7 +22,8 @@ export const PRODUCTS: Product[] = [
 		category: 'Electronics',
 		inventory: 8,
 		rating: 4.8,
-		isBestSeller: false
+		isBestSeller: false,
+		soldCount: 5,
 	},
 	{
 		id: '3',
@@ -32,6 +34,7 @@ export const PRODUCTS: Product[] = [
 		category: 'Electronics',
 		inventory: 20,
 		rating: 4.2,
-		isBestSeller: true
+		isBestSeller: true,
+		soldCount: 11,
 	}
 ];

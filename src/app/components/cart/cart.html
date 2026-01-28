@@ -1,66 +1,111 @@
-<div class="cart-page">
-	<div class="header-section">
-		<h2>ตะกร้าสินค้าของคุณ</h2>
-		<a routerLink="/" class="back-link">กลับไปเลือกสินค้า</a>
-	</div>
-
-	@if (cartService.cartCount() > 0) {
-	<div class="cart-container">
-		<div class="cart-items">
-			@for (item of cartService.getCartItems()(); track $index) {
-			<div class="cart-item">
-				<img [src]="item.product.imageUrl" [alt]="item.product.name">
-				<div class="item-details">
-					<h3>{{ item.product.name }}</h3>
-					<p class="category">{{ item.product.category }}</p>
-
-				</div>
-				<div class="item-price">
-					
-					<div class="quantity-controls">
-						<button class="qty-btn" (click)="cartService.updateQuantity($index, -1)">
-							<lucide-icon name="plus" [size]="16"></lucide-icon>
-						</button>
-
-						<span class="qty-number">{{ item.quantity }}</span>
-
-						<button class="qty-btn" (click)="cartService.updateQuantity($index, 1)">
-							<lucide-icon name="plus" [size]="16"></lucide-icon>
-						</button>
-					</div>
-
-					<div class="quantity-display">
-						<span>{{ item.product.price | number }} x {{ item.quantity }}</span>
-					</div>
-					<span class="subtotal">{{ item.product.price * item.quantity | number }} บาท</span>
-				</div>
-				<button class="remove-btn" (click)="removeItem($index)">
-					<lucide-icon name="trash-2" [size]="20"></lucide-icon>
-				</button>
-			</div>
-			}
+<div class="container">
+	<div class="cart-page">
+		<div class="header-section">
+			<h2>ตะกร้าสินค้าของคุณ</h2>
+			<a routerLink="/" class="back-link">กลับไปเลือกสินค้า</a>
 		</div>
 
-		<div class="cart-summary">
-			<h3>สรุปคำสั่งซื้อ</h3>
-			<div class="summary-row">
-				<span>จำนวนสินค้า</span>
-				<span>{{ cartService.cartCount() }} ชิ้น</span>
+		@if (cartService.cartCount() > 0) {
+		<div class="cart-container">
+			<div class="cart-items">
+				@for (item of cartService.getCartItems()(); track $index) {
+				<div class="cart-item">
+					<img [src]="item.product.imageUrl" [alt]="item.product.name">
+					<div class="item-details">
+						<h3>{{ item.product.name }}</h3>
+						<p class="category">{{ item.product.category }}</p>
+
+					</div>
+					<div class="item-price">
+
+						<div class="quantity-controls">
+							<button class="qty-btn" (click)="cartService.updateQuantity($index, -1)">
+								<lucide-icon name="minus" [size]="16"></lucide-icon>
+							</button>
+
+							<span class="qty-number">{{ item.quantity }}</span>
+
+							<button class="qty-btn" (click)="cartService.updateQuantity($index, 1)">
+								<lucide-icon name="plus" [size]="16"></lucide-icon>
+							</button>
+						</div>
+
+						<div class="quantity-display">
+							<span>{{ item.product.price | number }} x {{ item.quantity }}</span>
+						</div>
+						<span class="subtotal">{{ item.product.price * item.quantity | number }} บาท</span>
+					</div>
+					<button class="remove-btn" (click)="removeItem($index)">
+						<lucide-icon name="trash-2" [size]="20"></lucide-icon>
+					</button>
+				</div>
+				}
 			</div>
-			<div class="summary-row total">
-				<span>ราคารวมทั้งหมด</span>
-				<span>{{ cartService.totalPrice() | number }} บาท</span>
+
+			<div class="cart-summary">
+				<h3>สรุปคำสั่งซื้อ</h3>
+				<div class="summary-row">
+					<span>จำนวนสินค้า</span>
+					<span>{{ cartService.cartCount() }} ชิ้น</span>
+				</div>
+				<div class="summary-row total">
+					<span>ราคารวมทั้งหมด</span>
+					<span>{{ cartService.totalPrice() | number }} บาท</span>
+				</div>
+				<button class="checkout-btn" (click)="openCheckout()">ชำระเงิน</button>
 			</div>
-			<button class="checkout-btn">ชำระเงิน</button>
 		</div>
-	</div>
 
-	} @else {
+		} @else {
 
-	<div class="empty-cart">
-		<lucide-icon name="shopping-bag" [size]="64"></lucide-icon>
-		<p>ยังไม่มีสินค้าในตะกร้าของคุณ</p>
-		<button routerLink="/" class="shop-now-btn">ไปช้อปปิ้งกันเลย</button>
+		<div class="empty-cart">
+			<lucide-icon name="shopping-bag" [size]="64"></lucide-icon>
+			<p>ยังไม่มีสินค้าในตะกร้าของคุณ</p>
+			<button routerLink="/" class="shop-now-btn">ไปช้อปปิ้งกันเลย</button>
+		</div>
+		}
 	</div>
-	}
 </div>
+
+@if (isCheckoutOpen()) {
+<div class="modal-overlay" (click)="closeCheckout()">
+	<div class="modal-content" (click)="$event.stopPropagation()">
+		<div class="modal-header">
+			<h3>ข้อมูลจัดส่งสินค้า</h3>
+			<button class="close-model" (click)="closeCheckout()">
+				<lucide-icon name="x" [size]="20"></lucide-icon>
+			</button>
+		</div>
+
+		<form class="checkout-form" [formGroup]="checkoutForm">
+			<div class="form-group">
+				<label>ชื่อ-นามสกุล</label>
+				<input type="text" placeholder="กรอกชื่อผู้รับ" formControlName="name">
+			</div>
+
+			<div class="form-row">
+				<div class="form-group">
+					<label>เบอร์โทรศัพท์</label>
+					<input type="tel" placeholder="08x-xxxxxxx" maxlength="10" formControlName="phone">
+				</div>
+				<div class="form-group">
+					<label>รหัสไปรษณีย์</label>
+					<input type="text" placeholder="xxxxx" maxlength="5" formControlName="postalCode">
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label>จังหวัด</label>
+				<select formControlName="province">
+					<option value="">เลือกจังหวัด</option>
+					@for (province of provinces(); track province) {
+						<option [value]="province">{{ province }}</option>
+					}
+				</select>
+			</div>
+
+			<button class="confirm-btn" [disabled]="checkoutForm.invalid" (click)="onConfirmOrder()">ยืนยันการสั่งซื้อ</button>
+		</form>
+	</div>
+</div>
+}

@@ -1,10 +1,14 @@
 /* You can add global styles to this file, and also import other style files */
 :root {
-  --primary-red: #D90429;      
-  --secondary-red: #EF233C;    
-  --dark-bg: #2B2D42;         
-  --light-gray: #EDF2F4;    
+  --primary-red: #D90429;
+  --secondary-red: #EF233C;
+  --dark-bg: #2B2D42;
+  --light-gray: #EDF2F4;
   --text-main: #2B2D42;
+}
+
+* {
+  box-sizing: border-box;
 }
 
 body {
@@ -19,5 +23,9 @@ body {
 .container {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 0 15px;
+  padding: 0 1rem;
+
+  @media (min-width: 768px) {
+    padding: 0 2rem;
+  }
 }

@@ -1,29 +1,31 @@
-<div class="product-container">
-	@for (item of products; track item.id) {
-	<div class="product-card">
+<div class="container">
+	<div class="product-container">
+		@for (item of products; track item.id) {
+		<div class="product-card">
 
-		@if (item.isBestSeller) {
-		<div class="best-seller-ribbon">
-			<span>Best Seller</span>
+			@if (item.isBestSeller && (item.soldCount ?? 0) > 10) {
+			<div class="best-seller-ribbon">
+				<span>Best Seller</span>
+			</div>
+			}
+
+			<div class="product-image">
+				<img [src]="item.imageUrl" crossorigin="anonymous" [alt]="item.name">
+			</div>
+
+			<div class="product-info">
+				<h3>{{ item.name }}</h3>
+				<p class="description">{{ item.description }}</p>
+
+				<div class="price-row">
+					<span class="price">{{ item.price | number }} บาท</span>
+					<button class="add-btn" (click)="addToCart(item)">
+						เพิ่มลงตะกร้า
+					</button>
+				</div>
+			</div>
+
 		</div>
 		}
-
-		<div class="product-image">
-			<img [src]="item.imageUrl" crossorigin="anonymous" [alt]="item.name">
-		</div>
-
-		<div class="product-info">
-			<h3>{{ item.name }}</h3>
-			<p class="description">{{ item.description }}</p>
-
-			<div class="price-row">
-				<span class="price">{{ item.price | number }} บาท</span>
-				<button class="add-btn" (click)="addToCart(item)">
-					เพิ่มลงตะกร้า
-				</button>
-			</div>
-		</div>
-
 	</div>
-	}
 </div>

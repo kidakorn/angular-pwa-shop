@@ -8,6 +8,7 @@ export interface Product {
 	inventory: number;
 	rating?: number; // เครื่องหมาย ? หมายความว่าจะมีข้อมูลนี้หรือไม่ก็ได้ครับ
 	isBestSeller: boolean;
+	soldCount?: number;
 }
 
 export interface CartItem {
