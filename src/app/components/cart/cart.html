@@ -83,28 +83,48 @@
 				<input type="text" placeholder="กรอกชื่อผู้รับ" formControlName="name">
 			</div>
 
+			<div class="form-group">
+				<label>เบอร์โทรศัพท์</label>
+				<input type="tel" placeholder="08x-xxxxxxx" maxlength="10" formControlName="phone"
+					(input)="validateNumber($event)">
+			</div>
+
+			<div class="form-group">
+				<label>ที่อยู่ (บ้านเลขที่/ซอย/ถนน)</label>
+				<textarea placeholder="กรอกรายละเอียดที่อยู่" formControlName="addressDetail" rows="3"></textarea>
+			</div>
+
+			<div class="form-group">
+				<label>รหัสไปรษณีย์</label>
+				<input type="text" placeholder="xxxxx" maxlength="5" formControlName="postalCode"
+					(input)="validateNumber($event)">
+			</div>
+
 			<div class="form-row">
 				<div class="form-group">
-					<label>เบอร์โทรศัพท์</label>
-					<input type="tel" placeholder="08x-xxxxxxx" maxlength="10" formControlName="phone">
+					<label>แขวง/ตำบล</label>
+					<select formControlName="subDistrict">
+						<option value="">เลือกตำบล</option>
+						@for (item of addressOptions(); track item.subDistrict) {
+						<option [value]="item.subDistrict">{{ item.subDistrict }}</option>
+						}
+					</select>
 				</div>
+
 				<div class="form-group">
-					<label>รหัสไปรษณีย์</label>
-					<input type="text" placeholder="xxxxx" maxlength="5" formControlName="postalCode">
+					<label>เขต/อำเภอ</label>
+					<input type="text" placeholder="อำเภอ" formControlName="district" readonly>
 				</div>
 			</div>
 
 			<div class="form-group">
 				<label>จังหวัด</label>
-				<select formControlName="province">
-					<option value="">เลือกจังหวัด</option>
-					@for (province of provinces(); track province) {
-						<option [value]="province">{{ province }}</option>
-					}
-				</select>
+				<input type="text" placeholder="จังหวัด" formControlName="province" readonly>
 			</div>
 
-			<button class="confirm-btn" [disabled]="checkoutForm.invalid" (click)="onConfirmOrder()">ยืนยันการสั่งซื้อ</button>
+			<button class="confirm-btn" [disabled]="checkoutForm.invalid" (click)="onConfirmOrder()">
+				ยืนยันการสั่งซื้อ
+			</button>
 		</form>
 	</div>
 </div>

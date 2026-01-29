@@ -251,18 +251,23 @@
 			font-weight: 500;
 		}
 
-		input, select {
+		input, select, textarea {
 			padding: 0.8rem;
 			border: 1px solid #ddd;
 			border-radius: 8px;
 			font-family: inherit;
+			resize: none;
 		}
 	}
 
 	.form-row {
 		display: grid;
-		grid-template-columns: 1fr 1fr;
+		grid-template-columns: 1fr;
 		gap: 1rem;
+
+		@media (min-width: 480px) {
+			grid-template-columns: 1fr 1fr;
+		}
 	}
 
 	.confirm-btn {
