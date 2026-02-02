@@ -129,3 +129,28 @@
 	</div>
 </div>
 }
+
+@if (isOrderSuccess()) {
+<div class="success-overlay">
+	<div class="success-card">
+		<div class="success-icon">
+			<lucide-icon name="circle-check" [size]="80"></lucide-icon>
+		</div>
+		<h2>สั่งซื้อเรียบร้อย!</h2>
+		<p>ขอบคุณที่ร่วมเป็นส่วนหนึ่งของ DEVA SHOP</p>
+
+		<div class="order-details">
+			<div class="detail-row">
+				<span>เลขที่คำสั่งซื้อ:</span>
+				<strong>#DEVA-123456</strong>
+			</div>
+			<div class="detail-row">
+				<span>ยอดชำระทั้งสิ้น:</span>
+				<strong>{{ finalAmount() | number }} บาท</strong>
+			</div>
+		</div>
+
+		<button class="checkout-btn" (click)="goToHome()">ไปช้อปปิ้งต่อกันเลย</button>
+	</div>
+</div>
+}

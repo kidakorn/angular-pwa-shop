@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, signal } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { Route, Router, RouterLink } from '@angular/router';
 import { LucideAngularModule } from 'lucide-angular';
 import { CartService } from '../../services/cart';
 import { ReactiveFormsModule, FormGroup, FormControl, Validators } from '@angular/forms';
@@ -15,12 +15,13 @@ import { HttpClient } from '@angular/common/http';
 export class Cart {
   isCheckoutOpen = signal(false);
 
-  constructor(public cartService: CartService, private http: HttpClient) {
+  constructor(public cartService: CartService, private http: HttpClient, private router: Router) {
+
     this.loadAddressData();
 
     this.checkoutForm.get('postalCode')?.valueChanges.subscribe(value => {
       if (value && value.length === 5) {
-        
+
         const filtered = this.fullAddressDatabase().filter(item => item.zipcode == value);
 
         const results = filtered.map(item => ({
@@ -85,16 +86,27 @@ export class Cart {
     input.value = input.value.replace(/[^0-9]/g, '');
   }
 
+  finalAmount = signal(0);
+
   onConfirmOrder() {
     if (this.checkoutForm.valid) {
-      console.log('ข้อมูลลูกค้า:', this.checkoutForm.value);
-      alert('บันทึกข้อมูลเรียบร้อย!');
+      this.finalAmount.set(this.cartService.totalPrice());
       this.closeCheckout();
+      this.isOrderSuccess.set(true);
+      this.cartService.clearCart();
+      this.isCheckoutOpen.set(false);
     }
   }
 
+  isOrderSuccess = signal(false);
+
   removeItem(index: number) {
     this.cartService.removeFromCart(index);
+  }
+
+  goToHome() {
+    this.router.navigate(['/']);
+    this.isOrderSuccess.set(false);
   }
 
 }
