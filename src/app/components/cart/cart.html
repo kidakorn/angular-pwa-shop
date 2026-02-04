@@ -122,6 +122,37 @@
 				<input type="text" placeholder="จังหวัด" formControlName="province" readonly>
 			</div>
 
+			<div class="payment-section">
+				<label class="payment-label">ช่องทางการชำระเงิน</label>
+
+				<div class="payment-options">
+					<label class="option-item">
+						<input type="radio" value="bank_transfer" formControlName="paymentMethod">
+						<div class="option-content">
+							<lucide-icon name="landmark" [size]="24"></lucide-icon>
+							<span>โอนเงินผ่านธนาคาร</span>
+						</div>
+					</label>
+
+					<label class="option-item">
+						<input type="radio" value="promptpay" formControlName="paymentMethod">
+						<div class="option-content">
+							<lucide-icon name="qr-code" [size]="24"></lucide-icon>
+							<span>สแกนจ่าย (QR PromptPay)</span>
+						</div>
+					</label>
+
+					<label class="option-item">
+						<input type="radio" value="cod" formControlName="paymentMethod">
+						<div class="option-content">
+							<lucide-icon name="truck" [size]="24"></lucide-icon>
+							<span>เก็บเงินปลายทาง (COD)</span>
+						</div>
+					</label>
+
+				</div>
+			</div>
+
 			<button class="confirm-btn" [disabled]="checkoutForm.invalid" (click)="onConfirmOrder()">
 				ยืนยันการสั่งซื้อ
 			</button>
@@ -148,6 +179,43 @@
 				<span>ยอดชำระทั้งสิ้น:</span>
 				<strong>{{ finalAmount() | number }} บาท</strong>
 			</div>
+			<div class="detail-row">
+				<span>ชำระเงินผ่าน:</span>
+				<strong>
+					@if (selectedPaymentMethod() === 'bank_transfer') { โอนเงินผ่านธนาคาร }
+					@else if (selectedPaymentMethod() === 'promptpay') { สแกนจ่าย (QR Code) }
+					@else if (selectedPaymentMethod() === 'cod') { เก็บเงินปลายทาง }
+				</strong>
+			</div>
+		</div>
+
+		<div class="payment-details-box">
+			@if (selectedPaymentMethod() === 'bank_transfer') {
+			<div class="bank-info">
+				<p class="bank-name">
+					<lucide-icon name="landmark" [size]="20"></lucide-icon>
+					ธนาคารกสิกรไทย (KBANK)
+				</p>
+				<p class="acc-number">012-3-45678-9</p>
+				<p class="acc-name">ชื่อบัญชี: บจก. เดวา ช็อป</p>
+			</div>
+			}
+
+			@if (selectedPaymentMethod() === 'promptpay') {
+			<div class="qr-info">
+				<p>สแกนเพื่อชำระเงิน</p>
+				<qrcode [qrdata]="qrCodeString()" [width]="256" [errorCorrectionLevel]="'M'"></qrcode>
+				<p class="ref-text">ยอดชำระเงิน : {{ finalAmount() | number }} บาท</p>
+			</div>
+			}
+
+			@if (selectedPaymentMethod() === 'cod') {
+			<div class="cod-info">
+				<lucide-icon name="truck" [size]="48"></lucide-icon>
+				<p>เตรียมเงินสดไว้รอรับของได้เลย!</p>
+				<p class="cod-note">พนักงานจะโทรหาก่อนเข้าไปส่งสินค้า</p>
+			</div>
+			}
 		</div>
 
 		<button class="checkout-btn" (click)="goToHome()">ไปช้อปปิ้งต่อกันเลย</button>

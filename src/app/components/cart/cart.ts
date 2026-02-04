@@ -1,6 +1,8 @@
+import { QRCodeComponent } from 'angularx-qrcode';
+import generatePayload from 'promptpay-qr';
 import { CommonModule } from '@angular/common';
 import { Component, signal } from '@angular/core';
-import { Route, Router, RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { LucideAngularModule } from 'lucide-angular';
 import { CartService } from '../../services/cart';
 import { ReactiveFormsModule, FormGroup, FormControl, Validators } from '@angular/forms';
@@ -8,7 +10,7 @@ import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-cart',
-  imports: [CommonModule, LucideAngularModule, RouterLink, ReactiveFormsModule],
+  imports: [CommonModule, LucideAngularModule, RouterLink, ReactiveFormsModule, QRCodeComponent],
   templateUrl: './cart.html',
   styleUrl: './cart.scss',
 })
@@ -79,6 +81,7 @@ export class Cart {
     addressDetail: new FormControl('', Validators.required),
     subDistrict: new FormControl('', Validators.required),
     district: new FormControl('', Validators.required),
+    paymentMethod: new FormControl('', Validators.required)
   });
 
   validateNumber(event: any) {
@@ -87,10 +90,21 @@ export class Cart {
   }
 
   finalAmount = signal(0);
+  selectedPaymentMethod = signal('');
+  qrCodeString = signal('');
 
   onConfirmOrder() {
     if (this.checkoutForm.valid) {
       this.finalAmount.set(this.cartService.totalPrice());
+
+      const payload = generatePayload('090-759-6314', { amount: (this.cartService.totalPrice()) });
+      this.qrCodeString.set(payload);
+
+      const method = this.checkoutForm.value.paymentMethod
+      if (method) {
+        this.selectedPaymentMethod.set(method);
+      }
+
       this.closeCheckout();
       this.isOrderSuccess.set(true);
       this.cartService.clearCart();
