@@ -2,6 +2,8 @@ const express = require('express');
 const cors = require('cors');
 require('dotenv').config();
 const connectDB = require('./config/db')
+const auth = require('./routes/auth');
+const error = require('./middleware/error');
 
 connectDB();
 
@@ -13,6 +15,10 @@ app.use(cors());
 app.get('/', (req, res) => {
 	res.send('API is running...');
 });
+
+app.use('/api', auth);
+
+app.use(error);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
