@@ -3,6 +3,7 @@ const cors = require('cors');
 require('dotenv').config();
 const connectDB = require('./config/db')
 const auth = require('./routes/auth');
+const categoryRoutes = require('./routes/category');
 const error = require('./middleware/error');
 
 connectDB();
@@ -17,6 +18,7 @@ app.get('/', (req, res) => {
 });
 
 app.use('/api', auth);
+app.use('/api', categoryRoutes);
 
 app.use(error);
 
