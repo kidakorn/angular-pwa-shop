@@ -2,8 +2,7 @@ const express = require('express');
 const cors = require('cors');
 require('dotenv').config();
 const connectDB = require('./config/db')
-const auth = require('./routes/auth');
-const categoryRoutes = require('./routes/category');
+const { readdirSync } = require('fs');
 const error = require('./middleware/error');
 
 connectDB();
@@ -17,8 +16,7 @@ app.get('/', (req, res) => {
 	res.send('API is running...');
 });
 
-app.use('/api', auth);
-app.use('/api', categoryRoutes);
+readdirSync('./routes').map((r) => app.use('/api', require('./routes/' + r)));
 
 app.use(error);
 
