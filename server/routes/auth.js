@@ -9,11 +9,11 @@ router.post('/register', register);
 router.post('/login', login);
 
 router.post('/admin-test', auth, adminCheck, catchAsync(async (req, res) => {
-	res.json({ msg: 'Welcome to Admin-devashop!', user: req.user });
+	res.json({ msg: 'Welcome to Admin-devashop!', payload: { user: req.user } });
 }));
 
-router.post('/current-user', auth, catchAsync(async (req, res) => {
-	res.json({ msg: 'Welcome to Devashop!', user: req.user });
+router.get('/current-user', auth, catchAsync(async (req, res) => {
+	res.json({ payload: { user: req.user } });
 }));
 
 module.exports = router;

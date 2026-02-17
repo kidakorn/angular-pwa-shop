@@ -13,16 +13,38 @@
 			<h1 class="logo-text">DEVA<span>SHOP</span></h1>
 		</div>
 
-		<div class="cart-status" routerLink="/cart" style="cursor: pointer;">
-			<span class="total-price">{{ cartService.totalPrice() | number }} บาท</span>
-			<div class="cart-icon">
-				<lucide-icon name="shopping-cart" [size]="24"></lucide-icon>
+		<div style="display: flex; align-items: center; gap: 20px;">
 
-				@if (cartService.cartCount() > 0) {
-				<span class="badge">{{ cartService.cartCount() }}</span>
-				}
+			<div class="cart-status" routerLink="/cart" style="cursor: pointer;">
+				<span class="total-price">{{ cartService.totalPrice() | number }} บาท</span>
+				<div class="cart-icon">
+					<lucide-icon name="shopping-cart" [size]="24"></lucide-icon>
 
+					@if (cartService.cartCount() > 0) {
+					<span class="badge">{{ cartService.cartCount() }}</span>
+					}
+
+				</div>
 			</div>
+
+			@if (authService.currentUser()) {
+			<div class="user-dropdown">
+				<button class="dropbtn">
+					<lucide-icon name="user" [size]="20"></lucide-icon>
+					<span>{{ authService.currentUser().name }}</span>
+					<lucide-icon name="chevron-down" [size]="16"></lucide-icon>
+				</button>
+				<div class="dropdown-content">
+					<a (click)="authService.logout()">
+						<lucide-icon name="log-out" [size]="18"></lucide-icon>
+						Logout
+					</a>
+				</div>
+			</div>
+			} @else {
+			<a routerLink="/login" style="margin-left: 15px; font-weight: bold;">Login</a>
+			}
+
 		</div>
 	</div>
 

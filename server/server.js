@@ -9,7 +9,7 @@ connectDB();
 
 const app = express();
 
-app.use(express.json());
+app.use(express.json({ limit: '20mb' }));
 app.use(cors());
 
 app.get('/', (req, res) => {
