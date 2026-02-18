@@ -1,14 +1,15 @@
 export interface Product {
-	id: string;
-	name: string;
+	_id: string;
+	title: string;
+	images: string[];
+	stock: number;
 	price: number;
 	description: string;
-	imageUrl: string;
-	category: string;
-	inventory: number;
+	soldCount?: number;
+	category: any;
+
 	rating?: number; // เครื่องหมาย ? หมายความว่าจะมีข้อมูลนี้หรือไม่ก็ได้ครับ
 	isBestSeller: boolean;
-	soldCount?: number;
 }
 
 export interface CartItem {

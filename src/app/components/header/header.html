@@ -48,7 +48,31 @@
 		</div>
 	</div>
 
+	@if (isMenuOpen()) {
+	<div class="menu-backdrop" (click)="toggleMenu()"></div>
+	}
+
 	<nav class="mobile-menu" [class.open]="isMenuOpen()">
+
+		<div class="mobile-auth-section">
+			@if (authService.currentUser()) {
+			<div class="mobile-user-profile">
+				<div class="user-info">
+					<lucide-icon name="user" [size]="40"></lucide-icon>
+					<span class="user-name">{{ authService.currentUser().name }}</span>
+				</div>
+				<button class="mobile-logout" (click)="authService.logout(); isMenuOpen.set(false)">
+					<lucide-icon name="log-out" [size]="18"></lucide-icon>
+					Logout
+				</button>
+			</div>
+			} @else {
+			<div class="mobile-login-box">
+				<a routerLink="/login" class="login-btn" (click)="isMenuOpen.set(false)">Login</a>
+			</div>
+			}
+		</div>
+
 		<ul class="nav-links">
 			<li><a routerLink="/" (click)="isMenuOpen.set(false)">หน้าแรก</a></li>
 			<li><a routerLink="/" (click)="isMenuOpen.set(false)">สินค้าทั้งหมด</a></li>

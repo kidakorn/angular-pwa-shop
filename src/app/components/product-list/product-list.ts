@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { Product } from '../../models/product.model';
 import { ProductService } from '../../services/product';
 import { CartService } from '../../services/cart';
@@ -16,7 +16,8 @@ export class ProductList implements OnInit {
 
   constructor(
     private productService: ProductService,
-    private cartService: CartService
+    private cartService: CartService,
+    private cdr: ChangeDetectorRef,
   ) { }
 
   addToCart(product: Product) {
@@ -24,7 +25,10 @@ export class ProductList implements OnInit {
   }
 
   ngOnInit(): void {
-    this.products = this.productService.getProducts();
-    console.log('ข้อมูลสินค้าทั้งหมดที่ดึงมาได้:', this.products);
+    this.productService.getProducts().subscribe((response) => {
+      console.log('ข้อมูลที่ได้จาก API:', response);
+      this.products = response;
+      this.cdr.detectChanges();
+    });
   }
 }

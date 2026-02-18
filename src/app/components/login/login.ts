@@ -13,7 +13,6 @@ import Swal from 'sweetalert2';
 export class Login {
   private formBuilder = inject(FormBuilder);
   private authService = inject(AuthService);
-  private router = inject(Router);
 
   loginForm = this.formBuilder.group({
     email: ['', [Validators.required, Validators.email]],

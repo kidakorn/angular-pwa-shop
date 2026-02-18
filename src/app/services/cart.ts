@@ -27,7 +27,7 @@ export class CartService {
 
   addToCart(product: Product) {
     this.cartItems.update(items => {
-      const index = items.findIndex(i => i.product.id === product.id);
+      const index = items.findIndex(i => i.product._id === product._id);
 
       if (index !== -1) {
         items[index].quantity += 1; // มีสินค้าแล้ว เพิ่มจำนวน

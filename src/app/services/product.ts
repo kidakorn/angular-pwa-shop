@@ -1,17 +1,17 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Product } from '../models/product.model';
-import { PRODUCTS } from '../models/product-data';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ProductService {
-
-  private products: Product[] = PRODUCTS;
+  private http = inject(HttpClient);
+  private apiUrl = 'https://angular-pwa-shop.onrender.com/api/products';
 
   constructor() { }
 
-  getProducts() : Product[] {
-    return this.products;
+  getProducts() {
+    return this.http.get<Product[]>(this.apiUrl);
   }
 }

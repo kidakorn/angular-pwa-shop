@@ -1,20 +1,21 @@
 <div class="container">
 	<div class="product-container">
-		@for (item of products; track item.id) {
+		@for (item of products; track item._id) {
 		<div class="product-card">
 
-			@if (item.isBestSeller && (item.soldCount ?? 0) > 10) {
+			@if ((item.soldCount ?? 0) > 10) {
 			<div class="best-seller-ribbon">
 				<span>Best Seller</span>
 			</div>
 			}
 
 			<div class="product-image">
-				<img [src]="item.imageUrl" crossorigin="anonymous" [alt]="item.name">
+				<img [src]="item.images[0] || 'https://placehold.co/400x300?text=No+Image'" crossorigin="anonymous"
+					[alt]="item.title">
 			</div>
 
 			<div class="product-info">
-				<h3>{{ item.name }}</h3>
+				<h3>{{ item.title }}</h3>
 				<p class="description">{{ item.description }}</p>
 
 				<div class="price-row">

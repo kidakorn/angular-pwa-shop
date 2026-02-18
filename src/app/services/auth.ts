@@ -11,7 +11,7 @@ export class AuthService {
   private http = inject(HttpClient);
   private router = inject(Router);
 
-  private apiUrl = 'https://angular-pwa-shop.onrender.com/api';  // http://localhost:3000/api
+  private apiUrl = 'https://angular-pwa-shop.onrender.com/api' ;  //  https://angular-pwa-shop.onrender.com/api
   currentUser = signal<any>(null);
 
   constructor() {
