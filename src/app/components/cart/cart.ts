@@ -7,6 +7,7 @@ import { LucideAngularModule } from 'lucide-angular';
 import { CartService } from '../../services/cart';
 import { ReactiveFormsModule, FormGroup, FormControl, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-cart',
@@ -54,10 +55,11 @@ export class Cart {
   }
 
   loadAddressData() {
-    const url = 'https://raw.githubusercontent.com/earthchie/jquery.Thailand.js/master/jquery.Thailand.js/database/raw_database/raw_database.json';
+    const url = 'thailand-db.json';
+
     this.http.get<any[]>(url).subscribe(data => {
       this.fullAddressDatabase.set(data);
-      console.log('โหลดข้อมูลที่อยู่ไทยสำเร็จ! จำนวน:', data.length, 'รายการ');
+      console.log('โหลดข้อมูลที่อยู่ไทยสำเร็จ!');
     });
   }
 
@@ -95,20 +97,52 @@ export class Cart {
 
   onConfirmOrder() {
     if (this.checkoutForm.valid) {
-      this.finalAmount.set(this.cartService.totalPrice());
-
-      const payload = generatePayload('090-759-6314', { amount: (this.cartService.totalPrice()) });
-      this.qrCodeString.set(payload);
-
-      const method = this.checkoutForm.value.paymentMethod
-      if (method) {
-        this.selectedPaymentMethod.set(method);
+      const shippingAddress = {
+        name: this.checkoutForm.value.name,
+        phone: this.checkoutForm.value.phone,
+        addressDetail: this.checkoutForm.value.addressDetail,
+        subDistrict: this.checkoutForm.value.subDistrict,
+        district: this.checkoutForm.value.district,
+        province: this.checkoutForm.value.province,
+        postalCode: this.checkoutForm.value.postalCode,
       }
 
-      this.closeCheckout();
-      this.isOrderSuccess.set(true);
-      this.cartService.clearCart();
-      this.isCheckoutOpen.set(false);
+      const paymentDetails = {
+        method: this.checkoutForm.value.paymentMethod,
+        status: 'pending',
+      }
+
+      this.cartService.submitOrder(shippingAddress, paymentDetails).subscribe({
+        next: (response) => {
+          console.log('Order saved successfully', response);
+
+          const total = this.cartService.totalPrice();
+          this.finalAmount.set(total);
+
+          const method = this.checkoutForm.value.paymentMethod || '';
+          this.selectedPaymentMethod.set(method);
+
+          if (method === 'promptpay') {
+            const payload = generatePayload('090-759-6314', { amount: total });
+            this.qrCodeString.set(payload);
+          }
+
+          this.closeCheckout();
+          this.isOrderSuccess.set(true);
+
+          this.cartService.clearCart();
+          this.isCheckoutOpen.set(false);
+        },
+        error: (err) => {
+          console.log('There is an error with your order.', err);
+          Swal.fire({
+            icon: 'error',
+            title: 'Order Failed',
+            text: 'The order could not be placed. Please try again.',
+            confirmButtonColor: 'var(--primary-red)'
+          });
+        }
+      });
     }
   }
 

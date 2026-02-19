@@ -1,5 +1,7 @@
-import { Injectable, signal, computed, effect } from '@angular/core';
+import { Injectable, signal, computed, effect, inject } from '@angular/core';
 import { CartItem, Product } from '../models/product.model';
+import { HttpClient } from '@angular/common/http';
+import { environment } from '../../environments/environment.development';
 
 @Injectable({
   providedIn: 'root',
@@ -15,7 +17,7 @@ export class CartService {
 
   cartCount = computed(() => this.cartItems().length);
 
-  constructor() {
+  constructor(private http: HttpClient) {
     effect(() => {
       localStorage.setItem('cart_items', JSON.stringify(this.cartItems()));
     });
@@ -30,9 +32,9 @@ export class CartService {
       const index = items.findIndex(i => i.product._id === product._id);
 
       if (index !== -1) {
-        items[index].quantity += 1; // มีสินค้าแล้ว เพิ่มจำนวน
+        items[index].quantity += 1;
       } else {
-        items.push({ product, quantity: 1 }); // ยังไม่มีสินค้า เพิ่มรายการใหม่
+        items.push({ product, quantity: 1 });
       }
       return [...items];
     });
@@ -59,5 +61,21 @@ export class CartService {
 
   clearCart() {
     this.cartItems.set([]);
+  }
+
+  submitOrder(shippingAddress: any, paymentDetails: any) {
+
+    const formattedItem = this.cartItems().map(item => ({
+      productId: item.product._id,
+      quantity: item.quantity,
+    }));
+
+    const orderPayload = {
+      items: formattedItem,
+      shippingAddress: shippingAddress,
+      paymentDetails: paymentDetails,
+    };
+
+    return this.http.post(`${environment.apiUrl}/orders`, orderPayload);
   }
 }

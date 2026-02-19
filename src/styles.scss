@@ -31,3 +31,7 @@ body {
     padding: 0 2rem;
   }
 }
+
+.swal2-container {
+  z-index: 99999 !important; 
+}

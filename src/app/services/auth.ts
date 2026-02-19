@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { catchError, of, tap } from 'rxjs';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
+import { environment } from '../../environments/environment.development';
 
 @Injectable({
   providedIn: 'root',
@@ -11,7 +12,7 @@ export class AuthService {
   private http = inject(HttpClient);
   private router = inject(Router);
 
-  private apiUrl = 'https://angular-pwa-shop.onrender.com/api' ;  //  https://angular-pwa-shop.onrender.com/api
+  private apiUrl = `${environment.apiUrl}` ;  
   currentUser = signal<any>(null);
 
   constructor() {
