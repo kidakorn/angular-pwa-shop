@@ -4,6 +4,7 @@ import { catchError, of, tap } from 'rxjs';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
 import { environment } from '../../environments/environment';
+import { CartService } from './cart';
 
 @Injectable({
   providedIn: 'root',
@@ -11,6 +12,7 @@ import { environment } from '../../environments/environment';
 export class AuthService {
   private http = inject(HttpClient);
   private router = inject(Router);
+  private cartService = inject(CartService);
 
   private apiUrl = `${environment.apiUrl}` ;  
   currentUser = signal<any>(null);
@@ -43,6 +45,7 @@ export class AuthService {
 
   logout() {
     localStorage.removeItem('token');
+    this.cartService.clearCart();
     this.currentUser.set(null);
     this.router.navigate(['/login']);
   }
