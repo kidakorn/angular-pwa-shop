@@ -1,7 +1,8 @@
-@if (router.url !== '/login') {
-	<app-header></app-header>
+@if (router.url !== '/login' && router.url !== '/register') {
+  <app-header></app-header>
 }
 
-<main class="container">
-	<router-outlet></router-outlet>
-</main>
+<div [class.main-content]="router.url !== '/login' && router.url !== '/register'">
+  <router-outlet></router-outlet>
+</div>
+
