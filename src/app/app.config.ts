@@ -2,7 +2,7 @@ import { ApplicationConfig, provideBrowserGlobalErrorListeners, isDevMode, impor
 import { provideRouter } from '@angular/router';
 import { routes } from './app.routes';
 import { provideServiceWorker } from '@angular/service-worker';
-import { LucideAngularModule, ShoppingCart, Plus, ShoppingBag, Trash2, Star, Minus, X, Menu, CircleCheck, Landmark, QrCode, Truck, User, ChevronDown, LogOut } from 'lucide-angular';
+import { LucideAngularModule, ShoppingCart, Plus, ShoppingBag, Trash2, Star, Minus, X, Menu, CircleCheck, Landmark, QrCode, Truck, User, ChevronDown, LogOut, History } from 'lucide-angular';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { authInterceptor } from './auth.interceptor';
 
@@ -16,7 +16,7 @@ export const appConfig: ApplicationConfig = {
     provideBrowserGlobalErrorListeners(),
     provideRouter(routes),
     importProvidersFrom(
-      LucideAngularModule.pick({ ShoppingCart, Plus, ShoppingBag, Trash2, Star, Minus, X, Menu, CircleCheck, Landmark, QrCode, Truck, User, ChevronDown, LogOut })
+      LucideAngularModule.pick({ ShoppingCart, Plus, ShoppingBag, Trash2, Star, Minus, X, Menu, CircleCheck, Landmark, QrCode, Truck, User, ChevronDown, LogOut, History })
     ),
     provideServiceWorker('ngsw-worker.js', {
       enabled: !isDevMode(),

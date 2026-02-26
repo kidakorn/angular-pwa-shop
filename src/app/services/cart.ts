@@ -77,9 +77,16 @@ export class CartService {
     this.syncCartWithServer();
   }
 
+  clearFrontendCart() {
+    this.cartItems.set([]);
+  }
+
   clearCart() {
-    this.cartItems.set([]); 
-    // this.http.delete(`${environment.apiUrl}/cart`).subscribe();
+    this.cartItems.set([]);
+    this.http.delete(`${environment.apiUrl}/cart`).subscribe({
+      next: () => console.log('Cart cleared in database successfully!'),
+      error: (err) => console.log('Failed to clear cart in DB', err)
+    });
   }
 
   submitOrder(shippingAddress: any, paymentDetails: any) {

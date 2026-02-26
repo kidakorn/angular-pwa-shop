@@ -1,0 +1,56 @@
+<div class="max-w-4xl mx-auto p-4 sm:p-6 lg:p-8 min-h-screen">
+  <h1 class="text-2xl font-bold text-gray-900 mb-6">Order History</h1>
+
+  @if (orders().length === 0) {
+  <div class="text-center py-16 bg-white rounded-xl shadow-sm border border-gray-100">
+    <p class="text-gray-500 mb-6 text-lg">You have no order history.</p>
+    <a routerLink="/"
+      class="text-white bg-red-600 hover:bg-red-700 px-6 py-3 rounded-md transition shadow-md font-medium">
+      Start Shopping
+    </a>
+  </div>
+  } @else {
+  <div class="space-y-6">
+    @for (order of orders(); track order._id) {
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden hover:shadow-md transition">
+
+      <div class="bg-gray-50 p-4 sm:p-5 border-b border-gray-200 flex flex-wrap justify-between items-center gap-4">
+        <div>
+          <p class="text-xs text-gray-500 mb-1">Order Number</p>
+          <p class="font-semibold text-gray-900">#{{ (order._id + '') | uppercase | slice:-8 }}</p>
+        </div>
+        <div>
+          <p class="text-xs text-gray-500 mb-1">Order Date</p>
+          <p class="font-medium text-gray-700">{{ order.createdAt | date:'dd/MM/yyyy HH:mm':'GMT+0700' }}</p>
+        </div>
+        <div class="text-right">
+          <p class="text-xs text-gray-500 mb-1">Total Amount</p>
+          <p class="font-bold text-red-600 text-lg">{{ order.totalAmount | currency:'THB':'symbol':'1.0-0' }}</p>
+        </div>
+      </div>
+
+      <div class="p-4 sm:p-5 space-y-4">
+        @for (item of order.items; track item._id) {
+        <div class="flex items-center gap-4">
+          <div
+            class="w-16 h-16 bg-gray-100 rounded-md border shrink-0 flex items-center justify-center overflow-hidden">
+            <img [src]="item.productId?.images?.[0]?.url || 'assets/no-image.png'" alt="Product"
+              class="object-cover w-full h-full">
+          </div>
+
+          <div class="flex-1">
+            <h3 class="font-semibold text-gray-800 line-clamp-1">{{ item.productId?.title || 'Product unavailable' }}
+            </h3>
+            <p class="text-sm text-gray-500 mt-1">
+              {{ item.price | currency:'THB':'symbol':'1.0-0' }} x {{ item.quantity }} pcs
+            </p>
+          </div>
+        </div>
+        }
+      </div>
+
+    </div>
+    }
+  </div>
+  }
+</div>

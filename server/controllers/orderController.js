@@ -1,5 +1,6 @@
 const Product = require('../models/Product');
 const Order = require('../models/Order');
+const catchAsync = require('../utils/catchAsync');
 
 exports.createOrder = async (req, res) => {
 	try {
@@ -29,7 +30,7 @@ exports.createOrder = async (req, res) => {
 				});
 
 				product.stock -= item.quantity;
-				
+
 				product.soldCount += item.quantity;
 
 				await product.save();
@@ -49,5 +50,20 @@ exports.createOrder = async (req, res) => {
 	} catch (err) {
 		console.error(err);
 		res.status(500).json({ error: 'Create order failed' });
+	}
+};
+
+exports.getUserOrders = async (req, res) => {
+	try {
+		const userId = req.user._id || req.user.id;
+
+		const orders = await Order.find({ userId: userId })
+			.populate('items.productId')
+			.sort({ createdAt: -1 });
+
+		res.json(orders);
+	} catch (err) {
+		console.error(err);
+		res.status(500).json({ error: 'Get user orders failed' });
 	}
 };

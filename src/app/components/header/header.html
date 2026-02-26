@@ -35,6 +35,12 @@
 					<lucide-icon name="chevron-down" [size]="16"></lucide-icon>
 				</button>
 				<div class="dropdown-content">
+					<a routerLink="/order-history"
+						style="display: flex; align-items: center; gap: 8px; white-space: nowrap;">
+						<lucide-icon name="history" [size]="18"></lucide-icon>
+						<span>Order History</span>
+					</a>
+
 					<a (click)="authService.logout()">
 						<lucide-icon name="log-out" [size]="18"></lucide-icon>
 						Logout
@@ -74,9 +80,13 @@
 		</div>
 
 		<ul class="nav-links">
-			<li><a routerLink="/" (click)="isMenuOpen.set(false)">หน้าแรก</a></li>
-			<li><a routerLink="/" (click)="isMenuOpen.set(false)">สินค้าทั้งหมด</a></li>
-			<li><a routerLink="/cart" (click)="isMenuOpen.set(false)">ตะกร้าสินค้า</a></li>
+			<li><a routerLink="/" (click)="isMenuOpen.set(false)">Home</a></li>
+			<li><a routerLink="/" (click)="isMenuOpen.set(false)">Product Stock</a></li>
+			<li><a routerLink="/cart" (click)="isMenuOpen.set(false)">Cart</a></li>
+
+			@if (authService.currentUser()) {
+			<li><a routerLink="/order-history" (click)="isMenuOpen.set(false)">Order History</a></li>
+			}
 		</ul>
 	</nav>
 </header>

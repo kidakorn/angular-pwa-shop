@@ -4,10 +4,12 @@ import { Cart } from './components/cart/cart';
 import { Login } from './components/login/login';
 import { authGuard } from './auth.guard';
 import { Register } from './components/register/register';
+import { OrderHistory } from './pages/order-history/order-history';
 
 export const routes: Routes = [
 	{ path: '', component: ProductList, canActivate: [authGuard]},
 	{ path: 'cart', component: Cart, canActivate: [authGuard]},
 	{ path: 'login', component: Login },
 	{ path: 'register', component: Register },
+	{ path: 'order-history', component: OrderHistory },
 ];
