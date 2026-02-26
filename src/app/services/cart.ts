@@ -7,9 +7,8 @@ import { environment } from '../../environments/environment';
   providedIn: 'root',
 })
 export class CartService {
-  private cartItems = signal<CartItem[]>(
-    JSON.parse(localStorage.getItem('cart_items') || '[]')
-  );
+  private http = inject(HttpClient);
+  private cartItems = signal<CartItem[]>([]);
 
   totalPrice = computed(() =>
     this.cartItems().reduce((sum, item) => sum + (item.product.price * item.quantity), 0)
@@ -17,20 +16,36 @@ export class CartService {
 
   cartCount = computed(() => this.cartItems().length);
 
-  constructor(private http: HttpClient) {
-    effect(() => {
-      localStorage.setItem('cart_items', JSON.stringify(this.cartItems()));
-    });
-  }
+  constructor() { }
 
   getCartItems() {
     return this.cartItems;
   }
 
+  loadCart() {
+    this.http.get<any>(`${environment.apiUrl}/cart`).subscribe({
+      next: (res) => {
+        if (res && res.products) {
+          this.cartItems.set(res.products);
+        }
+      },
+      error: (err) => console.log('No cart found or not logged in yet')
+    });
+  }
+
+  private syncCartWithServer() {
+    const payload = {
+      cartItems: this.cartItems().map(item => ({
+        product: item.product._id,
+        quantity: item.quantity,
+      }))
+    };
+    this.http.post(`${environment.apiUrl}/cart`, payload).subscribe();
+  }
+
   addToCart(product: Product) {
     this.cartItems.update(items => {
       const index = items.findIndex(i => i.product._id === product._id);
-
       if (index !== -1) {
         items[index].quantity += 1;
       } else {
@@ -38,6 +53,7 @@ export class CartService {
       }
       return [...items];
     });
+    this.syncCartWithServer();
   }
 
   removeFromCart(index: number) {
@@ -46,6 +62,7 @@ export class CartService {
       newItems.splice(index, 1);
       return newItems;
     });
+    this.syncCartWithServer();
   }
 
   updateQuantity(index: number, change: number) {
@@ -57,10 +74,12 @@ export class CartService {
       }
       return [...items];
     });
+    this.syncCartWithServer();
   }
 
   clearCart() {
-    this.cartItems.set([]);
+    this.cartItems.set([]); 
+    // this.http.delete(`${environment.apiUrl}/cart`).subscribe();
   }
 
   submitOrder(shippingAddress: any, paymentDetails: any) {

@@ -30,6 +30,8 @@ export class AuthService {
         localStorage.setItem('token', res.token);
         this.currentUser.set(res.payload.user);
 
+        this.cartService.loadCart();
+
         Swal.fire({
           icon: 'success',
           title: 'Login success',
@@ -44,8 +46,8 @@ export class AuthService {
   }
 
   logout() {
-    localStorage.removeItem('token');
     this.cartService.clearCart();
+    localStorage.removeItem('token');
     this.currentUser.set(null);
     this.router.navigate(['/login']);
   }
@@ -56,6 +58,8 @@ export class AuthService {
     }).pipe(
       tap((res: any) => {
         this.currentUser.set(res.payload.user);
+
+        this.cartService.loadCart();
       }),
       catchError((err) => {
         localStorage.removeItem('token');
